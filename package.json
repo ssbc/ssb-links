@@ -8,12 +8,13 @@
     "url": "git://github.com/dominictarr/ssb-links.git"
   },
   "dependencies": {
+    "ssb-msgs": "^5.2.0",
+    "streamview-links": "0.0.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "set -e; for t in test/*.js; do node $t; done"
   },
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
-  "license": "MIT"  
+  "license": "MIT"
 }
