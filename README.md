@@ -1,0 +1,6 @@
+# ssb-links
+
+
+## License
+
+MIT
