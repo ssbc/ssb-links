@@ -2,9 +2,12 @@ var pull = require('pull-stream')
 var Links = require('streamview-links')
 var path = require('path')
 
-var msgs = require('ssb-msgs')
+var extractLinks = require('./links')
 
-exports.name = 'links2'
+//we could have up to six indexes for links,
+//but these are the three that we really need.
+//(queries are fast if the fields you already know
+//are left most, and the ranges are to the right of that.
 
 var indexes = [
   { key: 'SRD', value: ['source', 'rel', 'dest', 'ts'] },
@@ -12,43 +15,8 @@ var indexes = [
   { key: 'RDS', value: ['rel', 'dest', 'source', 'ts'] }
 ]
 
-function extract(data, iter) {
-  if(data.sync) return
-  var content = data.value.content
-  msgs.indexLinks(data.value, function (target, rel) {
-    if(rel == 'vote')
-      rel = ['vote', target.value]
-    else if(rel == 'flag')
-      rel = ['flag', target.reason]
-    else if(rel == 'mentions') {
-      if(target.link[0] === '@')
-        rel = ['mentions', '@'+(target.name||'').toLowerCase()]
-      else  if(target.link[0] == '&') {
-        rel = ['mentions', target.filename || target.name, target.size]
-      }
-      else {
-        console.error(target)
-        rel = ['mentions']
-      }
-    }
-    else if(rel == 'about') {
-      rel = ['about', content.name]
-    }
-    else if(rel == 'image')
-      rel = ['image', target.type, target.size]
-    else if(rel == 'contact')
-      rel = ['contact', content.following, content.blocking]
-    else
-      rel = [rel]
+exports.name = 'links2'
 
-    iter({
-      source: data.value.author,
-      dest: target.link,
-      rel: rel.join('!'),
-      ts: data.timestamp
-    })
-  })
-}
 exports.manifest = {
   read: 'source'
 }
@@ -56,7 +24,12 @@ exports.init = function (ssb, config) {
 
   var dir = path.join(config.path, 'links')
 
-  var links = Links(dir, indexes, extract, 2)
+  var version = 2
+  //it's really nice to tweak a few things
+  //and then change the version number,
+  //restart the server and have it regenerate the indexes,
+  //all consistent again.
+  var links = Links(dir, indexes, extractLinks, version)
 
   links.init(function (err, since) {
     console.error('LOAD LINKS SINCE', err, since)
@@ -77,6 +50,4 @@ exports.init = function (ssb, config) {
     }
   }
 }
-
-
 
