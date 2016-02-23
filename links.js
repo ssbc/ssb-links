@@ -54,12 +54,12 @@ module.exports = function (data, iter) {
     console.log({
       source: data.value.author,
       dest: ln.link,
-      rel: rel.join('!'),
+      rel: rel,
       ts: data.timestamp
     })
     iter({
       source: source, dest: dest,
-      rel: rel.join('!'),
+      rel: rel,
       ts: data.timestamp
     })
   })
