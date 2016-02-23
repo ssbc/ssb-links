@@ -18,13 +18,14 @@ var indexes = [
 exports.name = 'links2'
 
 exports.manifest = {
-  read: 'source'
+  read: 'source',
+  dump: 'source'
 }
 exports.init = function (ssb, config) {
 
   var dir = path.join(config.path, 'links')
 
-  var version = 2
+  var version = 5
   //it's really nice to tweak a few things
   //and then change the version number,
   //restart the server and have it regenerate the indexes,
@@ -45,9 +46,13 @@ exports.init = function (ssb, config) {
   })
 
   return {
+    dump: function () {
+      return links.dump()
+    },
     read: function (opts) {
+      if(opts && 'string' == typeof opts)
+        try { opts = {query: JSON.parse(opts) } } catch (_) {}
       return links.read(opts)
     }
   }
 }
-
