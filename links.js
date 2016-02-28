@@ -51,12 +51,6 @@ module.exports = function (data, iter) {
     else
       rel = [rel]
 
-    console.log({
-      source: data.value.author,
-      dest: ln.link,
-      rel: rel,
-      ts: data.timestamp
-    })
     iter({
       source: source, dest: dest,
       rel: rel,
@@ -64,6 +58,7 @@ module.exports = function (data, iter) {
     })
   })
 }
+
 
 
 
