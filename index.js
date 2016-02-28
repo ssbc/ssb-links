@@ -51,8 +51,12 @@ exports.init = function (ssb, config) {
     },
     read: function (opts) {
       if(opts && 'string' == typeof opts)
-        try { opts = {query: JSON.parse(opts) } } catch (_) {}
+        try { opts = {query: JSON.parse(opts) } } catch (err) {
+        return pull.error(err)
+      }
       return links.read(opts)
     }
   }
 }
+
+
