@@ -50,7 +50,7 @@ TODO: map all markdown links, including http links.
 
 ### query syntax
 
-the query must be a valid [map-reduce-filter](https://github.com/dominictarr/map-reduce-filter)
+the query must be a valid [map-filter-reduce](https://github.com/dominictarr/map-filter-reduce)
 
 ## example queries
 
