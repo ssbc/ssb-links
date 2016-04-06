@@ -16,7 +16,7 @@ var indexes = [
 ]
 
 exports.name = 'links2'
-
+exports.version = require('./package.json').version
 exports.manifest = {
   read: 'source',
   dump: 'source'
