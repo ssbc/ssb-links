@@ -62,7 +62,7 @@ and taking the output as a pull-stream.
 
 ### all feeds mentioned
 
-returns an object of `{[name]:{[feed]: count}}`
+returns an stream of `{name, feed, uses}`
 ``` js
 [
   {"$filter": {
@@ -70,7 +70,7 @@ returns an object of `{[name]:{[feed]: count}}`
   }},
 
   {"$reduce":{
-    "$group": [["rel", 1], "dest"], "$count": true
+    "name": ["rel", 1], "feed": "dest", "uses": {"$count": true}
   }}
 ]
 ```
@@ -85,7 +85,7 @@ return object in form of `{[thread_id]:{[poster]:count}}`
     "rel": ["root"]
   }},
   {"$reduce":{
-    "$group": ["dest", "source"], "$count": true
+    "thread": "dest", "participant": "source", "posts": {"$count": true}
   }}
 ]
 ```
@@ -99,7 +99,7 @@ return object in form of `{[thread_id]:{[poster]:count}}`
     "dest": "@EMovhfIrFk4NihAKnRNhrfRaqIhBv1Wj8pTxJNgvCCY=.ed25519"
   }},
   {"$reduce": {
-    "$group": [["rel", 1], "source"], "$count": true
+    "name": ["rel", 1], "by": "source", "uses": {"$count": true}
   }}
 ]
 ```
