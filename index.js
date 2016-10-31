@@ -36,9 +36,6 @@ exports.init = function (ssb, config) {
     console.error('LOAD LINKS SINCE', err, since)
     pull(
       ssb.createLogStream({gt: since || 0, live: true, limit: -1}),
-      pull.through(function (e) {
-        process.stderr.write('.')
-      }),
       links.write(function (err) {
         if(err) throw err
       })
@@ -58,5 +55,6 @@ exports.init = function (ssb, config) {
     }
   }
 }
+
 
 
