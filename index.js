@@ -1,8 +1,12 @@
 var pull = require('pull-stream')
-var Links = require('streamview-links')
+var FlumeQueryLinks = require('flumeview-query/links')
 var path = require('path')
 
 var extractLinks = require('./links')
+
+function isString (s) {
+  return 'string' === typeof s
+}
 
 //we could have up to six indexes for links,
 //but these are the three that we really need.
@@ -18,43 +22,28 @@ var indexes = [
 exports.name = 'links2'
 exports.version = require('./package.json').version
 exports.manifest = {
-  read: 'source',
-  dump: 'source'
+  read: 'source'
 }
+
 exports.init = function (ssb, config) {
-
-  var dir = path.join(config.path, 'links')
-
-  var version = 5
-  //it's really nice to tweak a few things
-  //and then change the version number,
-  //restart the server and have it regenerate the indexes,
-  //all consistent again.
-  var links = Links(dir, indexes, extractLinks, version)
-
-  links.init(function (err, since) {
-    console.error('LOAD LINKS SINCE', err, since)
-    pull(
-      ssb.createLogStream({gt: since || 0, live: true, limit: -1}),
-      links.write(function (err) {
-        if(err) throw err
-      })
-    )
-  })
-
-  return {
-    dump: function () {
-      return links.dump()
-    },
-    read: function (opts) {
-      if(opts && 'string' == typeof opts)
-        try { opts = {query: JSON.parse(opts) } } catch (err) {
-        return pull.error(err)
-      }
-      return links.read(opts)
-    }
+  var s = ssb._flumeUse('links2', FlumeQueryLinks(indexes, extractLinks, 1))
+  var read = s.read
+  s.read = function (opts) {
+    if(!opts) opts = {}
+    //accept json, makes it easier to query from cli.
+    if(isString(opts))
+      opts = {query: JSON.parse(opts)}
+    else if(isString(opts.query))
+      opts.query = JSON.parse(opts.query)
+    return read(opts)
   }
+  return s
 }
+
+
+
+
+
 
 
 
