@@ -8,6 +8,7 @@
     "url": "git://github.com/dominictarr/ssb-links.git"
   },
   "dependencies": {
+    "flumeview-query": "^4.0.0",
     "pull-stream": "^3.1.0",
     "ssb-msgs": "^5.2.0",
     "streamview-links": "^2.0.0"
