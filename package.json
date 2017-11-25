@@ -1,6 +1,6 @@
 {
   "name": "ssb-links",
-  "description": "",
+  "description": "index links in ssb messages",
   "version": "3.0.0",
   "homepage": "https://github.com/dominictarr/ssb-links",
   "repository": {
@@ -20,8 +20,4 @@
   "author": "Dominic Tarr <dominic.tarr@gmail.com> (http://dominictarr.com)",
   "license": "MIT"
 }
-
-
-
-
 
