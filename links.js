@@ -41,7 +41,7 @@ module.exports = function (data, iter) {
         rel = ['mentions']
       }
     }
-    else if(rel == 'about') {
+    else if(rel == 'about' && typeof content.name === 'string') {
       rel = ['about', content.name]
     }
     else if(rel == 'image')
