@@ -26,7 +26,7 @@ exports.manifest = {
 }
 
 exports.init = function (ssb, config) {
-  var s = ssb._flumeUse('links2', FlumeQueryLinks(indexes, extractLinks, 1))
+  var s = ssb._flumeUse('links2', FlumeQueryLinks(indexes, extractLinks, 2))
   var read = s.read
   s.read = function (opts) {
     if(!opts) opts = {}
