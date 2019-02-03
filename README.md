@@ -16,6 +16,20 @@ links2 = require('ssb-links').init(sbot, {path: '~/.ssb'})
 links2.read({query: [{$filter: {rel: ['mentions', {$prefix: '@d'}]}}]})
 ```
 
+## Installation
+
+Most clients will install ssb-links for you, but if you're running 
+ssb-server standalone you may see a message like:
+```
+WARNING-DEPRECATION: ssb-links not installed as a plugin. If you are using git-ssb, ssb-npm or patchfoo please consider installing it
+```
+
+If you are using one of the listed clients then run this command 
+to install it: ```ssb-server plugins.install ssb-links``` then add 
+```{"plugins":{"ssb-links": "links2"}}``` to your .ssb/config. 
+If you later switch to a client that enables this plugin automatically 
+just remove the line from your .ssb/config.
+
 ## config
 
 a leveldb instance will be created at `config.path+'/links'`
