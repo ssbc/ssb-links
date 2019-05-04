@@ -1,5 +1,5 @@
 var pull = require('pull-stream')
-var FlumeQueryLinks = require('flumeview-query/links')
+var FlumeViewQuery = require('flumeview-query')
 var path = require('path')
 
 var extractLinks = require('./links')
@@ -26,7 +26,7 @@ exports.manifest = {
 }
 
 exports.init = function (ssb, config) {
-  var s = ssb._flumeUse('links2', FlumeQueryLinks(indexes, extractLinks, 3))
+  var s = ssb._flumeUse('links2', FlumeViewQuery(3, {indexes, extractLinks}))
   var read = s.read
   s.read = function (opts) {
     if(!opts) opts = {}
