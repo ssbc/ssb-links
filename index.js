@@ -22,7 +22,8 @@ var indexes = [
 exports.name = 'links2'
 exports.version = require('./package.json').version
 exports.manifest = {
-  read: 'source'
+  read: 'source',
+  help: 'sync'
 }
 
 exports.init = function (ssb, config) {
@@ -37,15 +38,9 @@ exports.init = function (ssb, config) {
       opts.query = JSON.parse(opts.query)
     return read(opts)
   }
+  s.help = function () {
+    return require('./help')
+  }
   return s
 }
-
-
-
-
-
-
-
-
-
 

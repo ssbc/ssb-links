@@ -1,6 +1,8 @@
 # ssb-links
 
-ssb-plugin that indexes all the links!
+an [ssb-plugin](https://github.com/ssbc/secret-stack/blob/master/PLUGINS.md) that indexes all the links!
+
+This plugin can perform queries about messages that refer to other messages or feeds.
 
 ## Example
 
@@ -18,21 +20,20 @@ links2.read({query: [{$filter: {rel: ['mentions', {$prefix: '@d'}]}}]})
 
 ## Installation
 
-Most clients will install ssb-links for you, but if you're running 
-ssb-server standalone you may see a message like:
-```
-WARNING-DEPRECATION: ssb-links not installed as a plugin. If you are using git-ssb, ssb-npm or patchfoo please consider installing it
-```
+Most clients will install ssb-links for you, check if the `ssb-server links2.read --help` command works
+If not, to install it manually. Since ssb-links has the same name as a core feature, it actually exposes
+it's api as `sbot.links2` it was [originally intended to replace ssb-db.links](https://hackmd.io/IM5_tWIfSFuNoe3jtrjrtQ?view#incomplete-intentions)
+but that didn't end up happening. So after installing it you need to configure a different name.
+see [the configuration for renaming a plugin](https://github.com/ssbc/ssb-plugins#load-user-configured-plugins).
+This is not necessary if you are loading ssb-links directly in javascript code (as in the examples below).
 
-If you are using one of the listed clients then run this command 
-to install it: ```ssb-server plugins.install ssb-links``` then add 
-```{"plugins":{"ssb-links": "links2"}}``` to your .ssb/config. 
-If you later switch to a client that enables this plugin automatically 
-just remove the line from your .ssb/config.
+to install `ssb-server plugins.install ssb-links` then to configure
+`{"plugins":{"ssb-links": "links2"}}``` to your `~/.ssb/config`.
 
-## config
+## database
 
-a leveldb instance will be created at `config.path+'/links'`
+A leveldb instance will be created in your ssb directory `~/.ssb/flume/links`.
+Because of the size of a message id, this will be quite a large index.
 
 ## api: links2.read ({query: QUERY, live, reverse, limit})
 
@@ -69,14 +70,16 @@ the query must be a valid [map-filter-reduce](https://github.com/dominictarr/map
 ## example queries
 
 these queries are in JSON format so you can use them via the cli,
-sbot `links2.read '{QUERY}'`
+`ssb-server links2.read --query '{QUERY}'`
 be sure to use single quotes around the query so that the json is property
 escaped. otherwise, run these queries by passing them to `sbot.links2.read({query: QUERY})`
 and taking the output as a pull-stream.
 
 ### all feeds mentioned
 
-returns an stream of `{name, feed, uses}`
+counts the number of times each name is used by which feed.
+
+returns a stream all  `{name, feed, uses}` 
 ``` js
 [
   {"$filter": {
