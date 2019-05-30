@@ -10,7 +10,6 @@
   "dependencies": {
     "flumeview-query": "^6.0.0",
     "map-filter-reduce": "^2.0.0",
-    "pull-stream": "^3.6.11",
     "ssb-msgs": "^5.2.0"
   },
   "devDependencies": {},

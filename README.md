@@ -57,7 +57,7 @@ this module introduces the concept of "rel data",
 the rel is now stored as an array, and the data associated
 with the rel stored with it. by indexing it as an array,
 it becomes easy to query it when that data is a sortable range
-(for example, mention names, which may be aphabetically sorted)
+(for example, mention names, which may be alphabetically sorted)
 
 see `./links.js` to see how data is mapped.
 
@@ -73,7 +73,7 @@ these queries are in JSON format so you can use them via the cli,
 `ssb-server links2.read --query '{QUERY}'`
 be sure to use single quotes around the query so that the json is property
 escaped. otherwise, run these queries by passing them to `sbot.links2.read({query: QUERY})`
-and taking the output as a pull-stream.
+and taking the output as a [pull-stream](https://github.com/pull-stream/pull-stream).
 
 ### all feeds mentioned
 

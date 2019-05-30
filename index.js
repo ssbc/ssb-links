@@ -1,6 +1,4 @@
-var pull = require('pull-stream')
 var FlumeQueryLinks = require('flumeview-query/links')
-var path = require('path')
 
 var extractLinks = require('./links')
 
@@ -10,7 +8,7 @@ function isString (s) {
 
 //we could have up to six indexes for links,
 //but these are the three that we really need.
-//(queries are fast if the fields you already know
+//queries are fast if the fields you already know
 //are left most, and the ranges are to the right of that.
 
 var indexes = [
@@ -26,7 +24,7 @@ exports.manifest = {
   help: 'sync'
 }
 
-exports.init = function (ssb, config) {
+exports.init = function (ssb) {
   var s = ssb._flumeUse('links2', FlumeQueryLinks(indexes, extractLinks, 3))
   var read = s.read
   s.read = function (opts) {

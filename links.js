@@ -21,7 +21,7 @@ module.exports = function (data, iter) {
     var dest = ln.link
 
     //take all the already existing links and put
-    //the relavant aspects into the index,
+    //the relevant aspects into the index,
     //as part of the rel, so that we don't need to lookup
     //the message to get them, and even better,
     //we can query by these attributes! enabling search.
