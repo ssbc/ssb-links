@@ -1,15 +1,14 @@
-var FlumeQueryLinks = require('flumeview-query/links')
-
+var FlumeLinks = require('flumeview-links')
 var extractLinks = require('./links')
 
 function isString (s) {
-  return 'string' === typeof s
+  return typeof s === 'string'
 }
 
-//we could have up to six indexes for links,
-//but these are the three that we really need.
-//queries are fast if the fields you already know
-//are left most, and the ranges are to the right of that.
+// we could have up to six indexes for links,
+// but these are the three that we really need.
+// queries are fast if the fields you already know
+// are left most, and the ranges are to the right of that.
 
 var indexes = [
   { key: 'SRD', value: ['source', 'rel', 'dest', 'ts'] },
@@ -25,15 +24,15 @@ exports.manifest = {
 }
 
 exports.init = function (ssb) {
-  var s = ssb._flumeUse('links2', FlumeQueryLinks(indexes, extractLinks, 3))
+  var s = ssb._flumeUse('links2', FlumeLinks(indexes, extractLinks, 3))
   var read = s.read
   s.read = function (opts) {
-    if(!opts) opts = {}
-    //accept json, makes it easier to query from cli.
-    if(isString(opts))
-      opts = {query: JSON.parse(opts)}
-    else if(isString(opts.query))
-      opts.query = JSON.parse(opts.query)
+    if (!opts) opts = {}
+
+    // accept json, makes it easier to query from cli.
+    if (isString(opts)) opts = { query: JSON.parse(opts) }
+    else if (isString(opts.query)) opts.query = JSON.parse(opts.query)
+
     return read(opts)
   }
   s.help = function () {
@@ -41,4 +40,3 @@ exports.init = function (ssb) {
   }
   return s
 }
-
