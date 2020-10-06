@@ -1,5 +1,11 @@
 var msgs = require('ssb-msgs')
 
+function noObjects(value) {
+  if (Array.isArray(value)) return value.map(noObjects)
+  if (typeof value === 'object' && value !== null) return JSON.stringify(value)
+  return value
+}
+
 module.exports = function (data, iter) {
   if(data.sync) return
   var content = data.value.content
@@ -53,7 +59,7 @@ module.exports = function (data, iter) {
 
     iter({
       source: source, dest: dest,
-      rel: rel,
+      rel: rel.map(noObjects),
       ts: data.timestamp
     })
   })
